@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2D Sonnensystem mit Texturen, Rotation und Klick-Infos</title>
+<title>2D Sonnensystem mit Bewegung</title>
 <style>
   body {
     margin: 0;
@@ -84,11 +84,10 @@
 </head>
 <body>
 <div id="info">
-  <p>Tippen Sie auf einen Himmelskörper, um ein Bild und Infos anzuzeigen.<br>
-  Mit zwei Fingern können Sie zoomen und verschieben. Die Planeten haben Texturen und rotieren langsam.</p>
+  <p>Klicken Sie auf einen Himmelskörper, um Details anzuzeigen.</p>
 </div>
 <div id="canvasContainer">
-  <canvas id="canvas" width="500" height="500"></canvas>
+  <canvas id="canvas" width="800" height="600"></canvas>
 </div>
 <div id="overlay">
   <img id="overlayImage" src="" alt="Objektbild"/>
@@ -106,27 +105,36 @@
   const closeBtn = document.getElementById('closeBtn');
 
   const objectsData = [
-    { name: "Sonne", x: 250, y: 250, radius: 20, color: "yellow" },
-    { name: "Merkur", x: 320, y: 250, radius: 8, color: "gray" },
-    { name: "Venus", x: 380, y: 250, radius: 10, color: "orange" },
-    { name: "Erde", x: 450, y: 250, radius: 12, color: "blue" },
-    { name: "Mars", x: 520, y: 250, radius: 10, color: "red" }
+    { name: "Sonne", x: 400, y: 300, radius: 30, color: "yellow", angle: 0 },
+    { name: "Merkur", orbit: 60, radius: 8, color: "gray", speed: 0.05, angle: 0 },
+    { name: "Venus", orbit: 100, radius: 10, color: "orange", speed: 0.03, angle: 0 },
+    { name: "Erde", orbit: 140, radius: 12, color: "blue", speed: 0.02, angle: 0 },
+    { name: "Mars", orbit: 180, radius: 10, color: "red", speed: 0.015, angle: 0 }
   ];
 
   function drawPlanets() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#fff";
+    ctx.font = "14px sans-serif";
+
     objectsData.forEach(obj => {
+      if (obj.orbit) {
+        obj.angle += obj.speed;
+        obj.x = 400 + Math.cos(obj.angle) * obj.orbit;
+        obj.y = 300 + Math.sin(obj.angle) * obj.orbit;
+      }
       ctx.beginPath();
       ctx.arc(obj.x, obj.y, obj.radius, 0, Math.PI * 2);
       ctx.fillStyle = obj.color;
       ctx.fill();
       ctx.closePath();
+      ctx.fillText(obj.name, obj.x - obj.radius, obj.y - obj.radius - 5);
     });
   }
 
-  function showInfo(name, text) {
+  function showInfo(obj) {
     overlayImage.src = "https://via.placeholder.com/150";
-    overlayText.textContent = `${name}: ${text}`;
+    overlayText.textContent = `${obj.name}: Details folgen...`;
     overlay.style.display = 'flex';
   }
 
@@ -138,17 +146,21 @@
       const dx = mx - obj.x;
       const dy = my - obj.y;
       if (Math.sqrt(dx * dx + dy * dy) <= obj.radius) {
-        showInfo(obj.name, "Beschreibung folgt...");
+        showInfo(obj);
       }
     });
   });
 
   closeBtn.addEventListener('click', () => {
     overlay.style.display = 'none';
-    overlayImage.src = "";
   });
 
-  drawPlanets();
+  function animate() {
+    drawPlanets();
+    requestAnimationFrame(animate);
+  }
+
+  animate();
 })();
 </script>
 </body>
