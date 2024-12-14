@@ -7,10 +7,19 @@
     <link rel="stylesheet" href="style.css">
     <style>
         .emoji {
-            position: absolute;
+            position: fixed;
             font-size: 2em;
             pointer-events: auto;
             z-index: 1000;
+            animation: floatAround 10s ease-in-out infinite;
+        }
+
+        @keyframes floatAround {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(calc(100vw - 50px), calc(100vh - 50px)); }
+            50% { transform: translate(calc(100vw - 50px), 0); }
+            75% { transform: translate(0, calc(100vh - 50px)); }
+            100% { transform: translate(0, 0); }
         }
     </style>
 </head>
@@ -72,7 +81,6 @@
         emoji.style.left = Math.random() * window.innerWidth + 'px';
         emoji.style.top = Math.random() * window.innerHeight + 'px';
         document.body.appendChild(emoji);
-        moveEmoji(emoji);
 
         emoji.addEventListener('click', () => {
             emoji.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
@@ -80,14 +88,6 @@
             emoji.style.opacity = '0';
             setTimeout(() => emoji.remove(), 500);
         });
-    }
-
-    function moveEmoji(emoji) {
-        const x = Math.random() * window.innerWidth;
-        const y = Math.random() * window.innerHeight;
-        emoji.style.transition = 'transform 4s ease-in-out';
-        emoji.style.transform = `translate(${x}px, ${y}px)`;
-        setTimeout(() => moveEmoji(emoji), 4000);
     }
 
     setInterval(createEmoji, 1000);
