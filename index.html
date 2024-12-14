@@ -15,7 +15,6 @@
     display: flex;
     height: 100vh;
   }
-
   #canvasContainer {
     width: 75vw;
     height: 100vh;
@@ -23,7 +22,6 @@
     justify-content: center;
     align-items: center;
   }
-
   #infoContainer {
     width: 25vw;
     height: 100vh;
@@ -35,7 +33,6 @@
     flex-direction: column;
     align-items: center;
   }
-
   #infoImage {
     width: 90%;
     height: auto;
@@ -43,12 +40,10 @@
     border: 2px solid #fff;
     margin-bottom: 20px;
   }
-
   #infoText {
     font-size: 16px;
     text-align: center;
   }
-
   #speedControl {
     position: absolute;
     bottom: 20px;
@@ -57,7 +52,6 @@
     color: white;
     font-size: 16px;
   }
-
   canvas {
     background: transparent;
     touch-action: none;
@@ -103,12 +97,9 @@
     { name: "Sonne", x: 0, y: 0, radius: 30, color: "yellow" },
     { name: "Merkur", orbit: 60, radius: 8, color: "gray", speed: 0.2 },
     { name: "Venus", orbit: 100, radius: 10, color: "orange", speed: 0.15 },
-    { name: "Erde", orbit: 140, radius: 12, color: "blue", speed: 0.1 },
-    { name: "Mars", orbit: 180, radius: 10, color: "red", speed: 0.08 },
-    { name: "Jupiter", orbit: 260, radius: 20, color: "orange", speed: 0.05 },
-    { name: "Saturn", orbit: 340, radius: 18, color: "gold", speed: 0.04 },
-    { name: "Uranus", orbit: 420, radius: 15, color: "lightblue", speed: 0.03 },
-    { name: "Neptun", orbit: 500, radius: 15, color: "blue", speed: 0.02 }
+    { name: "Erde", orbit: 140, radius: 12, color: "blue", speed: 0.1, moons: [ { name: "Mond", orbit: 20, radius: 4, color: "white", speed: 0.4 } ] },
+    { name: "Mars", orbit: 180, radius: 10, color: "red", speed: 0.08, moons: [ { name: "Phobos", orbit: 15, radius: 3, color: "gray", speed: 0.3 }, { name: "Deimos", orbit: 25, radius: 2, color: "lightgray", speed: 0.25 } ] },
+    { name: "Jupiter", orbit: 260, radius: 20, color: "orange", speed: 0.05, moons: [ { name: "Io", orbit: 30, radius: 4, color: "yellow", speed: 0.5 }, { name: "Europa", orbit: 40, radius: 4, color: "white", speed: 0.4 } ] },
   ];
 
   speedControl.addEventListener('input', () => {
@@ -141,7 +132,6 @@
       ctx.arc(obj.x, obj.y, obj.radius, 0, Math.PI * 2);
       ctx.fillStyle = obj.color;
       ctx.fill();
-      ctx.closePath();
       ctx.fillText(obj.name, obj.x - obj.radius, obj.y - obj.radius - 5);
     });
 
