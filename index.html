@@ -3,94 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarah Ben Bernou - Kreative Design Thinking Coach</title>
+    <title>Sonnensystem Simulation</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .emoji {
-            position: fixed;
-            font-size: 2em;
-            pointer-events: auto;
-            z-index: 1000;
-            animation: floatAround 10s ease-in-out infinite;
+        body {
+            background: black;
+            color: white;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
         }
 
-        @keyframes floatAround {
-            0% { transform: translate(0, 0); }
-            25% { transform: translate(calc(100vw - 50px), calc(100vh - 50px)); }
-            50% { transform: translate(calc(100vw - 50px), 0); }
-            75% { transform: translate(0, calc(100vh - 50px)); }
-            100% { transform: translate(0, 0); }
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            animation: orbit infinite linear;
+            transform-origin: center;
+        }
+
+        .info-box {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        @keyframes mercury-orbit {
+            from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+        }
+
+        @keyframes venus-orbit {
+            from { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
+        }
+
+        @keyframes earth-orbit {
+            from { transform: rotate(0deg) translateX(200px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
+        }
+
+        @keyframes mars-orbit {
+            from { transform: rotate(0deg) translateX(250px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(250px) rotate(-360deg); }
         }
     </style>
 </head>
 <body>
-<header class="hero">
-    <div class="hero-content">
-        <h1 class="animate-fade-in">Sarah Ben Bernou</h1>
-        <p class="animate-slide-up">Entfessle dein kreatives Potenzial</p>
-        <button class="cta-button animate-bounce">Jetzt Entdecken</button>
-    </div>
-</header>
+<div id="info" class="info-box"></div>
 
-<section class="about parallax animate-fade-in">
-    <h2>Über mich</h2>
-    <div class="about-content animate-slide-in">
-        <img src="https://picsum.photos/300/300" alt="Sarah Ben Bernou">
-        <p>
-            Mit Leidenschaft für kreative Problemlösung und Innovationsmanagement unterstütze ich Teams und Unternehmen dabei, neue Ideen zu entwickeln und umzusetzen.
-        </p>
-    </div>
-</section>
+<div id="sun" class="planet" style="width: 100px; height: 100px; background: yellow; left: 50%; top: 50%; margin-left: -50px; margin-top: -50px;"></div>
 
-<section class="services animate-fade-in">
-    <h2>Meine Angebote</h2>
-    <div class="service-cards">
-        <div class="card animate-scale-up">
-            <h3>Workshops & Seminare</h3>
-            <p>Intensive Workshops für kreative Teams und Führungskräfte.</p>
-        </div>
-        <div class="card animate-scale-up">
-            <h3>Individuelles Coaching</h3>
-            <p>Persönliche Beratung für kreative Projekte und Karriereentwicklung.</p>
-        </div>
-        <div class="card animate-scale-up">
-            <h3>Innovationsberatung</h3>
-            <p>Entwicklung und Umsetzung innovativer Geschäftsmodelle.</p>
-        </div>
-    </div>
-</section>
-
-<footer class="footer animate-slide-up">
-    <h2>Kontakt</h2>
-    <form>
-        <input type="text" placeholder="Dein Name" required>
-        <input type="email" placeholder="Deine E-Mail" required>
-        <textarea placeholder="Deine Nachricht" required></textarea>
-        <button type="submit" class="animate-bounce">Senden</button>
-    </form>
-    <p>&copy; 2024 Sarah Ben Bernou - Alle Rechte vorbehalten.</p>
-</footer>
+<div id="mercury" class="planet" style="width: 20px; height: 20px; background: gray; animation: mercury-orbit 10s infinite linear;"></div>
+<div id="venus" class="planet" style="width: 30px; height: 30px; background: orange; animation: venus-orbit 20s infinite linear;"></div>
+<div id="earth" class="planet" style="width: 35px; height: 35px; background: blue; animation: earth-orbit 30s infinite linear;"></div>
+<div id="mars" class="planet" style="width: 25px; height: 25px; background: red; animation: mars-orbit 40s infinite linear;"></div>
 
 <script>
-    const emojis = ['🎨', '✨', '🚀', '💡', '🎯', '💫', '🔥', '🌟'];
+    const planets = {
+        mercury: "Merkur: Der sonnennächste Planet.",
+        venus: "Venus: Der heißeste Planet.",
+        earth: "Erde: Unser Heimatplanet.",
+        mars: "Mars: Der rote Planet."
+    };
 
-    function createEmoji() {
-        const emoji = document.createElement('div');
-        emoji.className = 'emoji';
-        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        emoji.style.left = Math.random() * window.innerWidth + 'px';
-        emoji.style.top = Math.random() * window.innerHeight + 'px';
-        document.body.appendChild(emoji);
-
-        emoji.addEventListener('click', () => {
-            emoji.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
-            emoji.style.transform = 'translateY(-100vh) scale(2)';
-            emoji.style.opacity = '0';
-            setTimeout(() => emoji.remove(), 500);
+    document.querySelectorAll('.planet').forEach(planet => {
+        planet.addEventListener('click', () => {
+            const infoBox = document.getElementById('info');
+            infoBox.textContent = planets[planet.id];
+            infoBox.style.display = 'block';
+            setTimeout(() => infoBox.style.display = 'none', 3000);
         });
-    }
-
-    setInterval(createEmoji, 1000);
+    });
 </script>
 </body>
 </html>
