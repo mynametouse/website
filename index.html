@@ -13,10 +13,9 @@
             font-family: Arial, sans-serif;
         }
 
-        .planet {
+        .planet, .moon {
             position: absolute;
             border-radius: 50%;
-            animation: orbit infinite linear;
             transform-origin: center;
         }
 
@@ -31,49 +30,47 @@
             display: none;
         }
 
-        @keyframes mercury-orbit {
-            from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
-            to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+        @keyframes orbit {
+            from { transform: rotate(0deg) translateX(var(--distance)) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(var(--distance)) rotate(-360deg); }
         }
 
-        @keyframes venus-orbit {
-            from { transform: rotate(0deg) translateX(150px) rotate(0deg); }
-            to { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
-        }
-
-        @keyframes earth-orbit {
-            from { transform: rotate(0deg) translateX(200px) rotate(0deg); }
-            to { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
-        }
-
-        @keyframes mars-orbit {
-            from { transform: rotate(0deg) translateX(250px) rotate(0deg); }
-            to { transform: rotate(360deg) translateX(250px) rotate(-360deg); }
+        @keyframes moon-orbit {
+            from { transform: rotate(0deg) translateX(var(--moon-distance)) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(var(--moon-distance)) rotate(-360deg); }
         }
     </style>
 </head>
 <body>
 <div id="info" class="info-box"></div>
 
+<!-- Sun -->
 <div id="sun" class="planet" style="width: 100px; height: 100px; background: yellow; left: 50%; top: 50%; margin-left: -50px; margin-top: -50px;"></div>
 
-<div id="mercury" class="planet" style="width: 20px; height: 20px; background: gray; animation: mercury-orbit 10s infinite linear;"></div>
-<div id="venus" class="planet" style="width: 30px; height: 30px; background: orange; animation: venus-orbit 20s infinite linear;"></div>
-<div id="earth" class="planet" style="width: 35px; height: 35px; background: blue; animation: earth-orbit 30s infinite linear;"></div>
-<div id="mars" class="planet" style="width: 25px; height: 25px; background: red; animation: mars-orbit 40s infinite linear;"></div>
+<!-- Planets with Moons -->
+<div id="mercury" class="planet" style="width: 20px; height: 20px; background: gray; animation: orbit 10s infinite linear; --distance: 100px;"></div>
+
+<div id="venus" class="planet" style="width: 30px; height: 30px; background: orange; animation: orbit 20s infinite linear; --distance: 150px;"></div>
+
+<div id="earth" class="planet" style="width: 35px; height: 35px; background: blue; animation: orbit 30s infinite linear; --distance: 200px;">
+    <div id="moon" class="moon" style="width: 10px; height: 10px; background: white; animation: moon-orbit 5s infinite linear; --moon-distance: 40px;"></div>
+</div>
+
+<div id="mars" class="planet" style="width: 25px; height: 25px; background: red; animation: orbit 40s infinite linear; --distance: 250px;"></div>
 
 <script>
     const planets = {
         mercury: "Merkur: Der sonnennächste Planet.",
         venus: "Venus: Der heißeste Planet.",
         earth: "Erde: Unser Heimatplanet.",
+        moon: "Mond: Der natürliche Satellit der Erde.",
         mars: "Mars: Der rote Planet."
     };
 
-    document.querySelectorAll('.planet').forEach(planet => {
-        planet.addEventListener('click', () => {
+    document.querySelectorAll('.planet, .moon').forEach(body => {
+        body.addEventListener('click', () => {
             const infoBox = document.getElementById('info');
-            infoBox.textContent = planets[planet.id];
+            infoBox.textContent = planets[body.id] || "Unbekannter Himmelskörper";
             infoBox.style.display = 'block';
             setTimeout(() => infoBox.style.display = 'none', 3000);
         });
