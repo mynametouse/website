@@ -1,160 +1,30 @@
-/* style.css */
-
-/* Grundlegendes Styling */
+/* Allgemeine Stile */
 body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #1e1e1e;
-  color: #ffffff;
-  overflow: hidden; /* Verhindert Scrollen */
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+    background: #f4f4f4;
+    position: relative;
 }
 
-/* Navigation-Menü */
-.navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background-color: rgba(30, 30, 30, 0.9);
-  display: flex;
-  justify-content: center;
-  padding: 15px 0;
-  z-index: 1000;
-}
-
-.navbar a {
-  color: #ffffff;
-  text-decoration: none;
-  margin: 0 20px;
-  font-size: 1.1em;
-  transition: color 0.3s;
-}
-
-.navbar a:hover {
-  color: #00aaff;
-}
-
-/* Zentrale Inhalte */
-.container {
-  position: relative;
-  z-index: 2;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 100px 20px 20px;
-}
-
-h1 {
-  font-size: 3em;
-  margin-bottom: 20px;
-  color: #00aaff;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
-
-p {
-  font-size: 1.2em;
-  max-width: 800px;
-  margin-bottom: 30px;
-  line-height: 1.5;
-  color: #cccccc;
-}
-
-/* Organische Blasen */
-.background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  z-index: -1;
-}
-
-.bubble {
-  position: absolute;
-  width: 200px;
-  height: 300px;
-  background: rgba(255, 107, 107, 0.7);
-  border-radius: 60% 40% 60% 40% / 50% 60% 40% 50%;
-  animation: float 8s infinite ease-in-out;
-}
-
-.bubble:nth-child(2) {
-  width: 250px;
-  height: 220px;
-  background: rgba(255, 204, 112, 0.7);
-  border-radius: 50% 60% 40% 60% / 60% 40% 50% 40%;
-  animation-duration: 10s;
-}
-
-.bubble:nth-child(3) {
-  width: 180px;
-  height: 240px;
-  background: rgba(107, 255, 176, 0.7);
-  border-radius: 60% 40% 50% 60% / 50% 60% 40% 50%;
-  animation-duration: 12s;
+/* Animierte Bohnen */
+.bean {
+    position: absolute;
+    width: 100px;
+    height: 60px;
+    border-radius: 60% 40% 70% 30% / 60% 40% 70% 30%;
+    opacity: 0.7;
+    animation: float 15s infinite;
 }
 
 @keyframes float {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  25% {
-    transform: translate(10vw, -10vh) scale(1.2);
-  }
-  50% {
-    transform: translate(-10vw, 10vh) scale(1.1);
-  }
-  75% {
-    transform: translate(5vw, -5vh) scale(1.3);
-  }
-  100% {
-    transform: translate(-5vw, 5vh) scale(1);
-  }
-}
-
-/* Modal-Styling */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 4;
-}
-
-.modal-content {
-  background: #333333;
-  padding: 30px;
-  border-radius: 10px;
-  text-align: center;
-  max-width: 500px;
-  position: relative;
-  color: #ffffff;
-}
-
-.close-modal {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: #ff6b6b;
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  color: #ffffff;
-  font-size: 1.2em;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.close-modal:hover {
-  background: #ff4c4c;
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(50vw, 50vh) scale(1.5);
+    }
+    100% {
+        transform: translate(100vw, 100vh) scale(1);
+    }
 }
