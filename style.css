@@ -1,4 +1,4 @@
-/* Allgemeines Styling */
+/* Grundlegendes Styling */
 * {
     margin: 0;
     padding: 0;
@@ -34,59 +34,56 @@ body {
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* Intro-Bereich */
-.intro {
-    padding: 4em 2em;
-    text-align: center;
-    background: white;
-    animation: fadeIn 2s ease-in;
-}
-
-.intro h2 {
-    font-size: 2.5em;
-    margin-bottom: 1em;
-}
-
-.intro img.placeholder {
-    width: 100%;
-    height: auto;
-    margin: 2em 0;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.intro p {
-    max-width: 800px;
-    margin: 0 auto;
-    font-size: 1.2em;
-    line-height: 1.8;
-}
-
-/* Call-to-Action */
-.cta {
-    padding: 4em 2em;
-    background: #2196f3;
-    color: white;
-    text-align: center;
-}
-
-.cta h2 {
-    font-size: 2.5em;
-    margin-bottom: 1em;
-}
-
-.cta .btn {
+.cta-button {
     background: #ff6f61;
     color: white;
     padding: 1em 2em;
     font-size: 1.2em;
     text-decoration: none;
     border-radius: 5px;
+    border: none;
+    cursor: pointer;
     transition: background 0.3s;
 }
 
-.cta .btn:hover {
+.cta-button:hover {
     background: #e55b50;
+}
+
+/* Parallax-Bereich */
+.parallax {
+    background: url('https://picsum.photos/1600/900') no-repeat center fixed;
+    background-size: cover;
+    padding: 4em 2em;
+    color: white;
+}
+
+.about-content img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    margin-right: 2em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.service-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2em;
+    margin: 2em 0;
+}
+
+.card {
+    background: white;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.card h3 {
+    font-size: 1.8em;
+    margin-bottom: 0.5em;
 }
 
 /* Footer */
@@ -99,9 +96,4 @@ body {
 
 .footer p {
     font-size: 0.9em;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
 }
