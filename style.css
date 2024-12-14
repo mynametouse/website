@@ -62,7 +62,7 @@ p {
   color: #cccccc;
 }
 
-/* Blasen Hintergrund */
+/* Blasen-Hintergrund */
 .background {
   position: fixed;
   top: 0;
@@ -75,25 +75,25 @@ p {
 
 .bubble {
   position: absolute;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(255, 107, 107, 0.8), transparent);
+  width: 150px;
+  height: 150px;
+  background: rgba(255, 107, 107, 0.7);
   border-radius: 50%;
-  animation: float 10s infinite ease-in-out;
+  animation: float 8s infinite ease-in-out;
 }
 
 .bubble:nth-child(2) {
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(255, 204, 112, 0.8), transparent);
-  animation-duration: 12s;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 204, 112, 0.7);
+  animation-duration: 10s;
 }
 
 .bubble:nth-child(3) {
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(circle, rgba(107, 255, 176, 0.8), transparent);
-  animation-duration: 15s;
+  width: 180px;
+  height: 180px;
+  background: rgba(107, 255, 176, 0.7);
+  animation-duration: 12s;
 }
 
 @keyframes float {
@@ -101,16 +101,16 @@ p {
     transform: translate(0, 0) scale(1);
   }
   25% {
-    transform: translate(15vw, -10vh) scale(1.2);
+    transform: translate(10vw, -10vh) scale(1.2);
   }
   50% {
-    transform: translate(-15vw, 15vh) scale(1.1);
+    transform: translate(-10vw, 10vh) scale(1.1);
   }
   75% {
-    transform: translate(10vw, -15vh) scale(1.3);
+    transform: translate(5vw, -5vh) scale(1.3);
   }
   100% {
-    transform: translate(-10vw, 10vh) scale(1);
+    transform: translate(-5vw, 5vh) scale(1);
   }
 }
 
