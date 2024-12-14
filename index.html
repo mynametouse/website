@@ -27,7 +27,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
     width: 70vw;
     height: calc(100vh - 60px);
   }
@@ -106,31 +105,50 @@
   const overlayText = document.getElementById('overlayText');
   const closeBtn = document.getElementById('closeBtn');
 
-  function showInfo(imgUrl, text) {
-    overlayImage.src = imgUrl;
-    overlayText.textContent = text;
+  const objectsData = [
+    { name: "Sonne", x: 250, y: 250, radius: 20, color: "yellow" },
+    { name: "Merkur", x: 320, y: 250, radius: 8, color: "gray" },
+    { name: "Venus", x: 380, y: 250, radius: 10, color: "orange" },
+    { name: "Erde", x: 450, y: 250, radius: 12, color: "blue" },
+    { name: "Mars", x: 520, y: 250, radius: 10, color: "red" }
+  ];
+
+  function drawPlanets() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    objectsData.forEach(obj => {
+      ctx.beginPath();
+      ctx.arc(obj.x, obj.y, obj.radius, 0, Math.PI * 2);
+      ctx.fillStyle = obj.color;
+      ctx.fill();
+      ctx.closePath();
+    });
+  }
+
+  function showInfo(name, text) {
+    overlayImage.src = "https://via.placeholder.com/150";
+    overlayText.textContent = `${name}: ${text}`;
     overlay.style.display = 'flex';
   }
+
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    objectsData.forEach(obj => {
+      const dx = mx - obj.x;
+      const dy = my - obj.y;
+      if (Math.sqrt(dx * dx + dy * dy) <= obj.radius) {
+        showInfo(obj.name, "Beschreibung folgt...");
+      }
+    });
+  });
 
   closeBtn.addEventListener('click', () => {
     overlay.style.display = 'none';
     overlayImage.src = "";
   });
 
-  canvas.addEventListener('click', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
-    const x = mx - canvas.width / 2;
-    const y = my - canvas.height / 2;
-    // Beispiel: Anzeige der Info der Sonne
-    if (Math.sqrt(x * x + y * y) < 20) {
-      showInfo(
-        "https://upload.wikimedia.org/wikipedia/commons/c/c3/Solar_sys8.jpg",
-        "Die Sonne ist der Stern im Zentrum unseres Sonnensystems."
-      );
-    }
-  });
+  drawPlanets();
 })();
 </script>
 </body>
