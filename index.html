@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2D Sonnensystem mit realistischer Bewegung</title>
+<title>2D Sonnensystem mit vollständigen Monden</title>
 <style>
   body {
     margin: 0;
@@ -43,7 +43,7 @@
 </head>
 <body>
 <div id="canvasContainer">
-  <canvas id="canvas" width="800" height="600"></canvas>
+  <canvas id="canvas" width="1000" height="800"></canvas>
 </div>
 <div id="speedControl">
   Geschwindigkeit: <input type="range" id="speedRange" min="0.1" max="2" step="0.1" value="1">
@@ -60,8 +60,27 @@
     { name: "Sonne", x: 0, y: 0, radius: 30, color: "yellow" },
     { name: "Merkur", orbit: 60, radius: 8, color: "gray", speed: 0.2 },
     { name: "Venus", orbit: 100, radius: 10, color: "orange", speed: 0.15 },
-    { name: "Erde", orbit: 140, radius: 12, color: "blue", speed: 0.1 },
-    { name: "Mars", orbit: 180, radius: 10, color: "red", speed: 0.08 }
+    { name: "Erde", orbit: 140, radius: 12, color: "blue", speed: 0.1, moons: [ { name: "Mond", orbit: 20, radius: 4, color: "white", speed: 0.3 } ] },
+    { name: "Mars", orbit: 180, radius: 10, color: "red", speed: 0.08, moons: [ { name: "Phobos", orbit: 15, radius: 3, color: "lightgray", speed: 0.4 }, { name: "Deimos", orbit: 25, radius: 2, color: "gray", speed: 0.5 } ] },
+    { name: "Jupiter", orbit: 260, radius: 20, color: "orange", speed: 0.05, moons: [
+      { name: "Ganymed", orbit: 30, radius: 5, color: "lightgray", speed: 0.3 },
+      { name: "Kallisto", orbit: 40, radius: 4, color: "gray", speed: 0.2 },
+      { name: "Io", orbit: 25, radius: 3, color: "orange", speed: 0.35 },
+      { name: "Europa", orbit: 35, radius: 4, color: "white", speed: 0.25 }
+    ] },
+    { name: "Saturn", orbit: 340, radius: 18, color: "gold", speed: 0.04, moons: [
+      { name: "Titan", orbit: 30, radius: 5, color: "goldenrod", speed: 0.3 },
+      { name: "Rhea", orbit: 40, radius: 4, color: "lightgray", speed: 0.2 },
+      { name: "Enceladus", orbit: 20, radius: 3, color: "white", speed: 0.35 }
+    ] },
+    { name: "Uranus", orbit: 420, radius: 15, color: "lightblue", speed: 0.03, moons: [
+      { name: "Titania", orbit: 30, radius: 4, color: "lightgray", speed: 0.3 },
+      { name: "Oberon", orbit: 35, radius: 4, color: "gray", speed: 0.25 },
+      { name: "Umbriel", orbit: 25, radius: 3, color: "darkgray", speed: 0.35 }
+    ] },
+    { name: "Neptun", orbit: 500, radius: 15, color: "blue", speed: 0.02, moons: [
+      { name: "Triton", orbit: 30, radius: 5, color: "lightblue", speed: 0.3 }
+    ] }
   ];
 
   speedControl.addEventListener('input', () => {
@@ -95,6 +114,19 @@
       ctx.fill();
       ctx.closePath();
       ctx.fillText(obj.name, obj.x - obj.radius, obj.y - obj.radius - 5);
+      if (obj.moons) {
+        obj.moons.forEach(moon => {
+          moon.angle = (moon.angle || Math.random() * Math.PI * 2) + moon.speed * speedMultiplier;
+          moon.x = obj.x + Math.cos(moon.angle) * moon.orbit;
+          moon.y = obj.y + Math.sin(moon.angle) * moon.orbit;
+          ctx.beginPath();
+          ctx.arc(moon.x, moon.y, moon.radius, 0, Math.PI * 2);
+          ctx.fillStyle = moon.color;
+          ctx.fill();
+          ctx.closePath();
+          ctx.fillText(moon.name, moon.x - moon.radius, moon.y - moon.radius - 5);
+        });
+      }
     });
 
     ctx.restore();
