@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2D Sonnensystem mit Bewegung</title>
+<title>2D Sonnensystem mit erweiterten Funktionen</title>
 <style>
   body {
     margin: 0;
-    background: #000;
+    background: url('https://source.unsplash.com/1600x900/?stars') no-repeat center center fixed;
+    background-size: cover;
     color: #fff;
     font-family: sans-serif;
     overflow: hidden;
@@ -32,7 +33,7 @@
   }
 
   canvas {
-    background: #111;
+    background: transparent;
     border: 2px solid #fff;
     touch-action: none;
   }
@@ -103,26 +104,33 @@
   const overlayImage = document.getElementById('overlayImage');
   const overlayText = document.getElementById('overlayText');
   const closeBtn = document.getElementById('closeBtn');
+  let zoomLevel = 1;
+  let offsetX = 0;
+  let offsetY = 0;
 
   const objectsData = [
-    { name: "Sonne", x: 400, y: 300, radius: 30, color: "yellow", angle: 0 },
-    { name: "Merkur", orbit: 60, radius: 8, color: "gray", speed: 0.05, angle: 0 },
-    { name: "Venus", orbit: 100, radius: 10, color: "orange", speed: 0.03, angle: 0 },
-    { name: "Erde", orbit: 140, radius: 12, color: "blue", speed: 0.02, angle: 0 },
-    { name: "Mars", orbit: 180, radius: 10, color: "red", speed: 0.015, angle: 0 }
+    { name: "Sonne", x: 400, y: 300, radius: 30, color: "yellow", mass: "1.989 × 10^30 kg" },
+    { name: "Merkur", orbit: 60, radius: 8, color: "gray", speed: 0.05, mass: "3.285 × 10^23 kg" },
+    { name: "Venus", orbit: 100, radius: 10, color: "orange", speed: 0.03, mass: "4.867 × 10^24 kg" },
+    { name: "Erde", orbit: 140, radius: 12, color: "blue", speed: 0.02, mass: "5.972 × 10^24 kg", moons: [
+      { name: "Mond", orbit: 20, radius: 4, color: "white", speed: 0.1 }
+    ] },
+    { name: "Mars", orbit: 180, radius: 10, color: "red", speed: 0.015, mass: "6.417 × 10^23 kg" }
   ];
 
   function drawPlanets() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#fff";
-    ctx.font = "14px sans-serif";
+    ctx.save();
+    ctx.translate(offsetX, offsetY);
+    ctx.scale(zoomLevel, zoomLevel);
 
     objectsData.forEach(obj => {
       if (obj.orbit) {
-        obj.angle += obj.speed;
+        obj.angle = (obj.angle || Math.random() * Math.PI * 2) + obj.speed;
         obj.x = 400 + Math.cos(obj.angle) * obj.orbit;
         obj.y = 300 + Math.sin(obj.angle) * obj.orbit;
       }
+
       ctx.beginPath();
       ctx.arc(obj.x, obj.y, obj.radius, 0, Math.PI * 2);
       ctx.fillStyle = obj.color;
@@ -130,18 +138,20 @@
       ctx.closePath();
       ctx.fillText(obj.name, obj.x - obj.radius, obj.y - obj.radius - 5);
     });
+
+    ctx.restore();
   }
 
   function showInfo(obj) {
     overlayImage.src = "https://via.placeholder.com/150";
-    overlayText.textContent = `${obj.name}: Details folgen...`;
+    overlayText.textContent = `${obj.name}: Masse ${obj.mass}`;
     overlay.style.display = 'flex';
   }
 
   canvas.addEventListener('click', (e) => {
     const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
+    const mx = (e.clientX - rect.left - offsetX) / zoomLevel;
+    const my = (e.clientY - rect.top - offsetY) / zoomLevel;
     objectsData.forEach(obj => {
       const dx = mx - obj.x;
       const dy = my - obj.y;
