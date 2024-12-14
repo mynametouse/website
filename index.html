@@ -4,23 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sonnensystem Simulation</title>
-    <link rel="stylesheet" href="style.css">
     <style>
         body {
+            margin: 0;
+            height: 100vh;
             background: black;
             color: white;
-            overflow: hidden;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+        }
+
+        #container {
+            width: 100vw;
             height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         #solar-system {
             position: relative;
             width: 600px;
             height: 600px;
+            transform-origin: center;
         }
 
         .planet, .moon {
@@ -29,16 +38,20 @@
             transform-origin: center;
         }
 
-        .info-box {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-            display: none;
+        #sun {
+            width: 100px;
+            height: 100px;
+            background: yellow;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
         }
+
+        #mercury { width: 20px; height: 20px; background: gray; --distance: 100px; animation: orbit 10s infinite linear; }
+        #venus { width: 30px; height: 30px; background: orange; --distance: 150px; animation: orbit 20s infinite linear; }
+        #earth { width: 35px; height: 35px; background: blue; --distance: 200px; animation: orbit 30s infinite linear; }
+        #moon { width: 10px; height: 10px; background: white; --moon-distance: 40px; animation: moon-orbit 5s infinite linear; }
+        #mars { width: 25px; height: 25px; background: red; --distance: 250px; animation: orbit 40s infinite linear; }
 
         @keyframes orbit {
             from { transform: rotate(0deg) translateX(var(--distance)) rotate(0deg); }
@@ -49,59 +62,28 @@
             from { transform: rotate(0deg) translateX(var(--moon-distance)) rotate(0deg); }
             to { transform: rotate(360deg) translateX(var(--moon-distance)) rotate(-360deg); }
         }
-
-        .control {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-        }
     </style>
 </head>
 <body>
-<div id="info" class="info-box"></div>
-
-<div id="solar-system">
-    <div id="sun" class="planet" style="width: 100px; height: 100px; background: yellow; left: 50%; top: 50%; margin-left: -50px; margin-top: -50px;"></div>
-
-    <div id="mercury" class="planet" style="width: 20px; height: 20px; background: gray; animation: orbit 10s infinite linear; --distance: 100px;"></div>
-    <div id="venus" class="planet" style="width: 30px; height: 30px; background: orange; animation: orbit 20s infinite linear; --distance: 150px;"></div>
-    <div id="earth" class="planet" style="width: 35px; height: 35px; background: blue; animation: orbit 30s infinite linear; --distance: 200px;">
-        <div id="moon" class="moon" style="width: 10px; height: 10px; background: white; animation: moon-orbit 5s infinite linear; --moon-distance: 40px;"></div>
+<div id="container">
+    <div id="solar-system">
+        <div id="sun"></div>
+        <div id="mercury" class="planet"></div>
+        <div id="venus" class="planet"></div>
+        <div id="earth" class="planet">
+            <div id="moon" class="moon"></div>
+        </div>
+        <div id="mars" class="planet"></div>
     </div>
-    <div id="mars" class="planet" style="width: 25px; height: 25px; background: red; animation: orbit 40s infinite linear; --distance: 250px;"></div>
-</div>
-
-<div class="control">
-    <label for="speed">Geschwindigkeit:</label>
-    <input type="range" id="speed" min="1" max="100" value="50">
 </div>
 
 <script>
-    const planets = {
-        mercury: "Merkur: Der sonnennächste Planet.",
-        venus: "Venus: Der heißeste Planet.",
-        earth: "Erde: Unser Heimatplanet.",
-        moon: "Mond: Der natürliche Satellit der Erde.",
-        mars: "Mars: Der rote Planet."
-    };
-
-    document.querySelectorAll('.planet, .moon').forEach(body => {
-        body.addEventListener('click', () => {
-            const infoBox = document.getElementById('info');
-            infoBox.textContent = planets[body.id] || "Unbekannter Himmelskörper";
-            infoBox.style.display = 'block';
-            setTimeout(() => infoBox.style.display = 'none', 3000);
-        });
-    });
-
-    const speedControl = document.getElementById('speed');
-    speedControl.addEventListener('input', () => {
-        const speed = speedControl.value;
-        document.documentElement.style.setProperty('--speed-factor', speed / 50);
+    let zoomLevel = 1;
+    document.addEventListener('wheel', event => {
+        if (event.deltaY < 0) zoomLevel += 0.1; // Zoom in
+        else zoomLevel -= 0.1; // Zoom out
+        zoomLevel = Math.max(0.5, Math.min(zoomLevel, 3));
+        document.getElementById('solar-system').style.transform = `scale(${zoomLevel})`;
     });
 </script>
 </body>
