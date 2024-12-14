@@ -62,7 +62,7 @@ p {
   color: #cccccc;
 }
 
-/* Blasen-Hintergrund */
+/* Organische Blasen */
 .background {
   position: fixed;
   top: 0;
@@ -75,24 +75,26 @@ p {
 
 .bubble {
   position: absolute;
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 300px;
   background: rgba(255, 107, 107, 0.7);
-  border-radius: 50%;
+  border-radius: 60% 40% 60% 40% / 50% 60% 40% 50%;
   animation: float 8s infinite ease-in-out;
 }
 
 .bubble:nth-child(2) {
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 220px;
   background: rgba(255, 204, 112, 0.7);
+  border-radius: 50% 60% 40% 60% / 60% 40% 50% 40%;
   animation-duration: 10s;
 }
 
 .bubble:nth-child(3) {
   width: 180px;
-  height: 180px;
+  height: 240px;
   background: rgba(107, 255, 176, 0.7);
+  border-radius: 60% 40% 50% 60% / 50% 60% 40% 50%;
   animation-duration: 12s;
 }
 
