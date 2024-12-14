@@ -7,7 +7,7 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #1e1e1e;
   color: #ffffff;
-  overflow-x: hidden; /* Verhindert horizontales Scrollen */
+  overflow: hidden; /* Verhindert Scrollen */
 }
 
 /* Navigation-Menü */
@@ -34,7 +34,7 @@ body {
   color: #00aaff;
 }
 
-/* Zentrale Container */
+/* Zentrale Inhalte */
 .container {
   position: relative;
   z-index: 2;
@@ -44,10 +44,9 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 100px 20px 20px; /* Abstand für das feste Menü */
+  padding: 100px 20px 20px;
 }
 
-/* Überschriften */
 h1 {
   font-size: 3em;
   margin-bottom: 20px;
@@ -55,14 +54,6 @@ h1 {
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-h2 {
-  font-size: 2.5em;
-  margin-bottom: 20px;
-  color: #00aaff;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
-
-/* Paragraphen */
 p {
   font-size: 1.2em;
   max-width: 800px;
@@ -71,157 +62,33 @@ p {
   color: #cccccc;
 }
 
-/* LinkedIn-Button */
-.linkedin-button, .twitter-button, .email-button {
-  display: inline-block;
-  padding: 15px 30px;
-  background-color: #0077B5; /* LinkedIn-Blau */
-  color: #fff;
-  text-decoration: none;
-  border-radius: 50px;
-  font-size: 1em;
-  transition: background-color 0.3s, transform 0.3s;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-  margin: 10px;
-}
-
-.twitter-button {
-  background-color: #1DA1F2; /* Twitter-Blau */
-}
-
-.email-button {
-  background-color: #ff6b6b; /* Beispiel-Farbe für E-Mail */
-}
-
-.linkedin-button:hover, .twitter-button:hover, .email-button:hover {
-  transform: translateY(-5px);
-}
-
-.linkedin-button:hover {
-  background-color: #005f8d;
-}
-
-.twitter-button:hover {
-  background-color: #0d95e8;
-}
-
-.email-button:hover {
-  background-color: #e64545;
-}
-
-/* Stockfotos */
-.team-member, .reference {
-  margin: 20px;
-  text-align: center;
-}
-
-.team-member img, .reference img {
-  width: 250px;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 4px solid #00aaff;
-  transition: transform 0.3s, border-color 0.3s;
-}
-
-.team-member img:hover, .reference img:hover {
-  transform: scale(1.05);
-  border-color: #ff6b6b;
-}
-
-/* Animierte Emojis auf der Startseite */
-.emoji-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
+/* Lavalampe Hintergrund */
+.background {
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle, #ff6b6b, #ffcc70, #6bffb0);
+  animation: lavaAnimation 10s infinite ease-in-out alternate;
+  z-index: -1;
 }
 
-.emoji {
-  position: absolute;
-  font-size: 2em;
-  cursor: grab;
-  user-select: none;
-  transition: background-color 0.3s;
-}
-
-.emoji:active {
-  cursor: grabbing;
-}
-
-/* Interaktive Kreise */
-.interactive-circle {
-  position: absolute;
-  border: 2px solid #ffffff;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  transition: transform 0.3s, background-color 0.3s;
-  z-index: 3;
-}
-
-.interactive-circle:hover {
-  transform: scale(1.2);
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Hintergrund-Kreise */
-.background-circle {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.2;
-  animation: float 20s infinite ease-in-out;
-}
-
-.background-circle1 {
-  width: 200px;
-  height: 200px;
-  background-color: #ff6b6b;
-  top: -50px;
-  left: 10%;
-  animation-duration: 25s;
-}
-
-.background-circle2 {
-  width: 300px;
-  height: 300px;
-  background-color: #feca57;
-  top: 70%;
-  left: 80%;
-  animation-duration: 35s;
-}
-
-.background-circle3 {
-  width: 150px;
-  height: 150px;
-  background-color: #1dd1a1;
-  top: 20%;
-  left: 60%;
-  animation-duration: 20s;
-}
-
-.background-circle4 {
-  width: 250px;
-  height: 250px;
-  background-color: #54a0ff;
-  top: 50%;
-  left: 40%;
-  animation-duration: 30s;
-}
-
-@keyframes float {
+@keyframes lavaAnimation {
   0% {
-    transform: translateY(0) rotate(0deg);
+    transform: translate(0%, 0%) scale(1);
+  }
+  25% {
+    transform: translate(10%, -10%) scale(1.2);
   }
   50% {
-    transform: translateY(-100px) rotate(180deg);
+    transform: translate(-10%, 10%) scale(1.1);
+  }
+  75% {
+    transform: translate(5%, -5%) scale(1.3);
   }
   100% {
-    transform: translateY(0) rotate(360deg);
+    transform: translate(-5%, 5%) scale(1);
   }
 }
 
