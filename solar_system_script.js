@@ -41,6 +41,7 @@
       if (Math.sqrt(dx * dx + dy * dy) <= obj.radius) {
         infoImage.src = planetImages[obj.name] || "";
         infoText.textContent = planetInfo[obj.name] || "Keine Informationen verfügbar";
+        console.log(`Klick auf: ${obj.name}`); // Debug-Ausgabe
       }
     });
   });
