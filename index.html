@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sarah Ben Bernou - Kreative Design Thinking Coach</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .emoji {
+            position: absolute;
+            font-size: 2em;
+            pointer-events: auto;
+            z-index: 1000;
+        }
+    </style>
 </head>
 <body>
 <header class="hero">
@@ -55,7 +63,6 @@
 </footer>
 
 <script>
-    // Emoji Animationen
     const emojis = ['🎨', '✨', '🚀', '💡', '🎯', '💫', '🔥', '🌟'];
 
     function createEmoji() {
@@ -65,6 +72,7 @@
         emoji.style.left = Math.random() * window.innerWidth + 'px';
         emoji.style.top = Math.random() * window.innerHeight + 'px';
         document.body.appendChild(emoji);
+        moveEmoji(emoji);
 
         emoji.addEventListener('click', () => {
             emoji.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
@@ -72,6 +80,14 @@
             emoji.style.opacity = '0';
             setTimeout(() => emoji.remove(), 500);
         });
+    }
+
+    function moveEmoji(emoji) {
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        emoji.style.transition = 'transform 4s ease-in-out';
+        emoji.style.transform = `translate(${x}px, ${y}px)`;
+        setTimeout(() => moveEmoji(emoji), 4000);
     }
 
     setInterval(createEmoji, 1000);
