@@ -1,0 +1,269 @@
+/* style.css */
+
+/* Grundlegendes Styling */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #1e1e1e;
+  color: #ffffff;
+  overflow-x: hidden; /* Verhindert horizontales Scrollen */
+}
+
+/* Navigation-Menü */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: rgba(30, 30, 30, 0.9);
+  display: flex;
+  justify-content: center;
+  padding: 15px 0;
+  z-index: 1000;
+}
+
+.navbar a {
+  color: #ffffff;
+  text-decoration: none;
+  margin: 0 20px;
+  font-size: 1.1em;
+  transition: color 0.3s;
+}
+
+.navbar a:hover {
+  color: #00aaff;
+}
+
+/* Zentrale Container */
+.container {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 100px 20px 20px; /* Abstand für das feste Menü */
+}
+
+/* Überschriften */
+h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+  color: #00aaff;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+h2 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #00aaff;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Paragraphen */
+p {
+  font-size: 1.2em;
+  max-width: 800px;
+  margin-bottom: 30px;
+  line-height: 1.5;
+  color: #cccccc;
+}
+
+/* LinkedIn-Button */
+.linkedin-button, .twitter-button, .email-button {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: #0077B5; /* LinkedIn-Blau */
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 1em;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  margin: 10px;
+}
+
+.twitter-button {
+  background-color: #1DA1F2; /* Twitter-Blau */
+}
+
+.email-button {
+  background-color: #ff6b6b; /* Beispiel-Farbe für E-Mail */
+}
+
+.linkedin-button:hover, .twitter-button:hover, .email-button:hover {
+  transform: translateY(-5px);
+}
+
+.linkedin-button:hover {
+  background-color: #005f8d;
+}
+
+.twitter-button:hover {
+  background-color: #0d95e8;
+}
+
+.email-button:hover {
+  background-color: #e64545;
+}
+
+/* Stockfotos */
+.team-member, .reference {
+  margin: 20px;
+  text-align: center;
+}
+
+.team-member img, .reference img {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #00aaff;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.team-member img:hover, .reference img:hover {
+  transform: scale(1.05);
+  border-color: #ff6b6b;
+}
+
+/* Animierte Emojis auf der Startseite */
+.emoji-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.emoji {
+  position: absolute;
+  font-size: 2em;
+  cursor: grab;
+  user-select: none;
+  transition: background-color 0.3s;
+}
+
+.emoji:active {
+  cursor: grabbing;
+}
+
+/* Interaktive Kreise */
+.interactive-circle {
+  position: absolute;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s;
+  z-index: 3;
+}
+
+.interactive-circle:hover {
+  transform: scale(1.2);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Hintergrund-Kreise */
+.background-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.2;
+  animation: float 20s infinite ease-in-out;
+}
+
+.background-circle1 {
+  width: 200px;
+  height: 200px;
+  background-color: #ff6b6b;
+  top: -50px;
+  left: 10%;
+  animation-duration: 25s;
+}
+
+.background-circle2 {
+  width: 300px;
+  height: 300px;
+  background-color: #feca57;
+  top: 70%;
+  left: 80%;
+  animation-duration: 35s;
+}
+
+.background-circle3 {
+  width: 150px;
+  height: 150px;
+  background-color: #1dd1a1;
+  top: 20%;
+  left: 60%;
+  animation-duration: 20s;
+}
+
+.background-circle4 {
+  width: 250px;
+  height: 250px;
+  background-color: #54a0ff;
+  top: 50%;
+  left: 40%;
+  animation-duration: 30s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-100px) rotate(180deg);
+  }
+  100% {
+    transform: translateY(0) rotate(360deg);
+  }
+}
+
+/* Modal-Styling */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+}
+
+.modal-content {
+  background: #333333;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 500px;
+  position: relative;
+  color: #ffffff;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: #ff6b6b;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  color: #ffffff;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.close-modal:hover {
+  background: #ff4c4c;
+}
