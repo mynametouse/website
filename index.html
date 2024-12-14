@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2D Sonnensystem mit Infoanzeige und Zoom</title>
+<title>2D Sonnensystem mit Infoanzeige</title>
 <style>
   body {
     margin: 0;
@@ -97,44 +97,6 @@
     "Neptun": "https://upload.wikimedia.org/wikipedia/commons/5/56/Neptune_Full.jpg"
   };
 
-  let zoomLevel = 1;
-  let offsetX = 0;
-  let offsetY = 0;
-
-  canvas.addEventListener('wheel', (event) => {
-    zoomLevel += event.deltaY * -0.001;
-    zoomLevel = Math.min(Math.max(zoomLevel, 0.5), 3);
-    event.preventDefault();
-  });
-
-  canvas.addEventListener('mousedown', (event) => {
-    let isDragging = true;
-    let startX = event.clientX;
-    let startY = event.clientY;
-
-    function onMouseMove(e) {
-      if (isDragging) {
-        offsetX += (e.clientX - startX) / zoomLevel;
-        offsetY += (e.clientY - startY) / zoomLevel;
-        startX = e.clientX;
-        startY = e.clientY;
-      }
-    }
-
-    function onMouseUp() {
-      isDragging = false;
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
-    }
-
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
-  });
-
-  speedControl.addEventListener('input', () => {
-    speedMultiplier = parseFloat(speedControl.value);
-  });
-
   const objectsData = [
     { name: "Sonne", x: 0, y: 0, radius: 30, color: "yellow" },
     { name: "Merkur", orbit: 60, radius: 8, color: "gray", speed: 0.2 },
@@ -150,8 +112,8 @@
   function drawPlanets() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.save();
-    ctx.translate(canvas.width / 2 + offsetX, canvas.height / 2 + offsetY);
-    ctx.scale(zoomLevel, zoomLevel);
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.scale(1, 1);
 
     objectsData.forEach(obj => {
       if (obj.orbit) {
@@ -176,9 +138,9 @@
 
   canvas.addEventListener('click', (event) => {
     const rect = canvas.getBoundingClientRect();
-    const mx = (event.clientX - rect.left - canvas.width / 2) / zoomLevel - offsetX;
-    const my = (event.clientY - rect.top - canvas.height / 2) / zoomLevel - offsetY;
-    
+    const mx = (event.clientX - rect.left - canvas.width / 2);
+    const my = (event.clientY - rect.top - canvas.height / 2);
+
     objectsData.forEach(obj => {
       const dx = mx - obj.x;
       const dy = my - obj.y;
@@ -187,3 +149,15 @@
         infoText.textContent = obj.name;
       }
     });
+  });
+
+  function animate() {
+    drawPlanets();
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+})();
+</script>
+</body>
+</html>
