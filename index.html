@@ -1,63 +1,12 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sarah Ben Bernou</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<!-- Blasen-Hintergrund -->
-<div class="background">
-  <div class="bubble" style="left: 10%; top: 20%;"></div>
-  <div class="bubble" style="left: 50%; top: 60%;"></div>
-  <div class="bubble" style="left: 70%; top: 40%;"></div>
-</div>
-
-<!-- Navigation-Menü -->
-<div class="navbar">
-  <a href="index.html">Home</a>
-  <a href="team.html">Team</a>
-  <a href="referenzen.html">Referenzen</a>
-</div>
-
-<!-- Zentrale Inhalte -->
-<div class="container">
-  <h1>Willkommen auf der Webseite von Sarah Ben Bernou</h1>
-  <a href="https://www.linkedin.com/in/sarah-ben-bernou" target="_blank" rel="noopener noreferrer" class="linkedin-button">
-    Besuchen Sie mein LinkedIn-Profil
-  </a>
-  <p>Verbinden Sie sich mit mir auf LinkedIn für aktuelle Updates und berufliche Netzwerke.</p>
-</div>
-
-<!-- Modal für Informationen -->
-<div class="modal" id="infoModal">
-  <div class="modal-content">
-    <button class="close-modal" id="closeModal">&times;</button>
-    <p id="modalText">Informationen werden geladen...</p>
-  </div>
-</div>
-
-<!-- Font Awesome für Icons (optional) -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-<script>
-  // Interaktive Kreise und Modalsteuerung
-  document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('infoModal');
-    const closeModal = document.getElementById('closeModal');
-
-    closeModal.addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-  });
-</script>
+<script src="animation.js"></script>
 </body>
 </html>
