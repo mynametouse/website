@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2D Sonnensystem mit Zoom-Funktion</title>
+<title>2D Sonnensystem mit Infoanzeige</title>
 <style>
   body {
     margin: 0;
@@ -13,17 +13,40 @@
     font-family: sans-serif;
     overflow: hidden;
     display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
   }
 
   #canvasContainer {
+    width: 75vw;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100vw;
+  }
+
+  #infoContainer {
+    width: 25vw;
     height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #infoImage {
+    width: 90%;
+    height: auto;
+    max-height: 60%;
+    border: 2px solid #fff;
+    margin-bottom: 20px;
+  }
+
+  #infoText {
+    font-size: 16px;
+    text-align: center;
   }
 
   #speedControl {
@@ -45,6 +68,10 @@
 <div id="canvasContainer">
   <canvas id="canvas" width="1000" height="800"></canvas>
 </div>
+<div id="infoContainer">
+  <img id="infoImage" src="" alt="Himmelskörper Bild" />
+  <p id="infoText">Klicke auf einen Himmelskörper für Details</p>
+</div>
 <div id="speedControl">
   Geschwindigkeit: <input type="range" id="speedRange" min="0.1" max="2" step="0.1" value="1">
 </div>
@@ -53,56 +80,29 @@
 (function(){
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
+  const infoImage = document.getElementById('infoImage');
+  const infoText = document.getElementById('infoText');
   const speedControl = document.getElementById('speedRange');
   let speedMultiplier = parseFloat(speedControl.value);
 
-  let zoomLevel = 1;
-  let offsetX = 0;
-  let offsetY = 0;
-
-  canvas.addEventListener('wheel', (event) => {
-    const zoomSpeed = 0.1;
-    if (event.deltaY < 0) {
-      zoomLevel += zoomSpeed;
-    } else {
-      zoomLevel -= zoomSpeed;
-    }
-    zoomLevel = Math.max(0.5, Math.min(zoomLevel, 3));
-    event.preventDefault();
-  });
-
-  canvas.addEventListener('mousedown', (event) => {
-    let isDragging = true;
-    const startX = event.clientX;
-    const startY = event.clientY;
-
-    function onMouseMove(e) {
-      if (isDragging) {
-        offsetX += (e.clientX - startX) / zoomLevel;
-        offsetY += (e.clientY - startY) / zoomLevel;
-      }
-    }
-
-    function onMouseUp() {
-      isDragging = false;
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
-    }
-
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
-  });
-
-  speedControl.addEventListener('input', () => {
-    speedMultiplier = parseFloat(speedControl.value);
-  });
+  const planetImages = {
+    "Sonne": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Solar_sys8.jpg",
+    "Merkur": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Mercury_in_true_color.jpg",
+    "Venus": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Venus-real_color.jpg",
+    "Erde": "https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg",
+    "Mars": "https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg",
+    "Jupiter": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Jupiter.jpg",
+    "Saturn": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Saturn_during_Equinox.jpg",
+    "Uranus": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Uranus2.jpg",
+    "Neptun": "https://upload.wikimedia.org/wikipedia/commons/5/56/Neptune_Full.jpg"
+  };
 
   const objectsData = [
     { name: "Sonne", x: 0, y: 0, radius: 30, color: "yellow" },
     { name: "Merkur", orbit: 60, radius: 8, color: "gray", speed: 0.2 },
     { name: "Venus", orbit: 100, radius: 10, color: "orange", speed: 0.15 },
-    { name: "Erde", orbit: 140, radius: 12, color: "blue", speed: 0.1, moons: [ { name: "Mond", orbit: 20, radius: 4, color: "white", speed: 0.3 } ] },
-    { name: "Mars", orbit: 180, radius: 10, color: "red", speed: 0.08, moons: [ { name: "Phobos", orbit: 15, radius: 3, color: "lightgray", speed: 0.4 }, { name: "Deimos", orbit: 25, radius: 2, color: "gray", speed: 0.5 } ] },
+    { name: "Erde", orbit: 140, radius: 12, color: "blue", speed: 0.1 },
+    { name: "Mars", orbit: 180, radius: 10, color: "red", speed: 0.08 },
     { name: "Jupiter", orbit: 260, radius: 20, color: "orange", speed: 0.05 },
     { name: "Saturn", orbit: 340, radius: 18, color: "gold", speed: 0.04 },
     { name: "Uranus", orbit: 420, radius: 15, color: "lightblue", speed: 0.03 },
@@ -112,8 +112,8 @@
   function drawPlanets() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.save();
-    ctx.translate(canvas.width / 2 + offsetX, canvas.height / 2 + offsetY);
-    ctx.scale(zoomLevel, zoomLevel);
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.scale(1, 1);
 
     objectsData.forEach(obj => {
       if (obj.orbit) {
@@ -125,7 +125,6 @@
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
         ctx.stroke();
       }
-
       ctx.beginPath();
       ctx.arc(obj.x, obj.y, obj.radius, 0, Math.PI * 2);
       ctx.fillStyle = obj.color;
@@ -136,6 +135,21 @@
 
     ctx.restore();
   }
+
+  canvas.addEventListener('click', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (event.clientX - rect.left - canvas.width / 2);
+    const my = (event.clientY - rect.top - canvas.height / 2);
+
+    objectsData.forEach(obj => {
+      const dx = mx - obj.x;
+      const dy = my - obj.y;
+      if (Math.sqrt(dx * dx + dy * dy) <= obj.radius) {
+        infoImage.src = planetImages[obj.name] || "";
+        infoText.textContent = obj.name;
+      }
+    });
+  });
 
   function animate() {
     drawPlanets();
