@@ -1,0 +1,57 @@
+body {
+  margin: 0;
+  background: url('https://www.solarsystemscope.com/textures/download/8k_stars_milky_way.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+  font-family: sans-serif;
+  overflow: hidden;
+  display: flex;
+  height: 100vh;
+}
+
+#canvasContainer {
+  width: 75vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#infoContainer {
+  width: 25vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#infoImage {
+  width: 90%;
+  height: auto;
+  max-height: 60%;
+  border: 2px solid #fff;
+  margin-bottom: 20px;
+}
+
+#infoText {
+  font-size: 16px;
+  text-align: center;
+}
+
+#speedControl {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 16px;
+}
+
+canvas {
+  background: transparent;
+  touch-action: none;
+}
