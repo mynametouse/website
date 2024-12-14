@@ -6,73 +6,80 @@
 <title>2D Sonnensystem mit Texturen, Rotation und Klick-Infos</title>
 <style>
   body {
-    margin:0;
-    background:#000;
-    color:#fff;
+    margin: 0;
+    background: #000;
+    color: #fff;
     font-family: sans-serif;
-    overflow:hidden;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
   }
+
   #info {
-    text-align:center;
-    margin:10px;
-    font-size:14px;
-    color:#fff;
+    text-align: center;
+    margin: 10px;
+    font-size: 14px;
   }
+
   #canvasContainer {
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    position:relative;
-    width:100vw;
-    height:calc(100vh - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 70vw;
+    height: calc(100vh - 60px);
   }
+
   canvas {
-    background:#111;
-    border:2px solid #fff;
-    touch-action:none;
+    background: #111;
+    border: 2px solid #fff;
+    touch-action: none;
   }
+
   #overlay {
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    background:rgba(0,0,0,0.8);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    z-index:9999;
-    padding:20px;
-    box-sizing:border-box;
-    text-align:center;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 25vw;
+    max-height: 90vh;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
   }
+
   #overlay img {
-    max-width:80%;
-    height:auto;
-    border:2px solid #fff;
-    margin-bottom:10px;
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #fff;
+    margin-bottom: 10px;
   }
+
   #closeBtn {
-    background:#444;
-    color:#fff;
-    font-size:14px;
-    margin-top:20px;
-    padding:8px 10px;
-    border:none;
-    border-radius:5px;
-    cursor:pointer;
-    outline:none;
+    background: #444;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    margin-top: 10px;
   }
+
   #closeBtn:hover {
-    background:#666;
+    background: #666;
   }
+
   #overlayText {
-    font-size:14px;
-    margin:0;
-    color:#fff;
-    max-width:80%;
-    line-height:1.5;
+    font-size: 14px;
+    color: #fff;
+    line-height: 1.5;
+    text-align: center;
   }
 </style>
 </head>
@@ -99,197 +106,6 @@
   const overlayText = document.getElementById('overlayText');
   const closeBtn = document.getElementById('closeBtn');
 
-  let scaleFactor = 1.0;
-  let offsetX = 0;
-  let offsetY = 0;
-
-  const centerX = canvas.width/2;
-  const centerY = canvas.height/2;
-
-  // Beispielhafte Daten mit unterschiedlichen Texturen und passenden Bildern
-  // Texturquellen: Public Domain oder frei verfügbare NASA/Wikipedia Bilder
-  const objectsData = [
-    {
-      name:"Sonne", type:"sun", radius:20, orbitRadius:0, speed:0,
-      image:"https://upload.wikimedia.org/wikipedia/commons/c/c3/Solar_sys8.jpg",
-      info:"Die Sonne ist der Stern im Zentrum unseres Sonnensystems.",
-      textureURL:"https://upload.wikimedia.org/wikipedia/commons/4/4a/Sun_texture_map.jpg"
-    },
-    {
-      name:"Merkur", type:"planet", radius:8, orbitRadius:60, speed:0.002,
-      image:"https://upload.wikimedia.org/wikipedia/commons/3/3e/Mercury_in_true_color.jpg",
-      info:"Merkur ist der sonnennächste Planet.",
-      textureURL:"https://upload.wikimedia.org/wikipedia/commons/7/7e/Mercury_map_lo.jpg"
-    },
-    {
-      name:"Venus", type:"planet", radius:9, orbitRadius:80, speed:0.0015,
-      image:"https://upload.wikimedia.org/wikipedia/commons/e/e5/Venus-real_color.jpg",
-      info:"Venus hat eine extrem dichte und heiße Atmosphäre.",
-      textureURL:"https://upload.wikimedia.org/wikipedia/commons/0/0e/Venus_map.jpg"
-    },
-    {
-      name:"Erde", type:"planet", radius:10, orbitRadius:100, speed:0.001,
-      image:"https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg",
-      info:"Die Erde ist unsere Heimatwelt.",
-      textureURL:"https://upload.wikimedia.org/wikipedia/commons/1/1f/Blue_Marble_2002.png"
-    },
-    {
-      name:"Mond", type:"moon", radius:4, orbitRadius:15, speed:0.003, parent:3,
-      image:"https://upload.wikimedia.org/wikipedia/commons/e/e1/FullMoon2010.jpg",
-      info:"Der Mond ist der Begleiter der Erde.",
-      textureURL:"https://upload.wikimedia.org/wikipedia/commons/e/e1/FullMoon2010.jpg"
-    },
-    {
-      name:"Mars", type:"planet", radius:9, orbitRadius:130, speed:0.0008,
-      image:"https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg",
-      info:"Mars ist als der Rote Planet bekannt.",
-      textureURL:"https://upload.wikimedia.org/wikipedia/commons/1/1b/Mars_Viking_color.jpg"
-    },
-    {
-      name:"Jupiter", type:"planet", radius:15, orbitRadius:170, speed:0.0005,
-      image:"https://upload.wikimedia.org/wikipedia/commons/e/e2/Jupiter.jpg",
-      info:"Jupiter ist der größte Planet des Sonnensystems.",
-      textureURL:"https://upload.wikimedia.org/wikipedia/commons/5/5d/Jupiter_map.jpg"
-    },
-    {
-      name:"Io", type:"moon", radius:4, orbitRadius:20, speed:0.005, parent:6,
-      image:"https://upload.wikimedia.org/wikipedia/commons/f/f2/Io_highest_resolution_true_color.jpg",
-      info:"Io, ein Galileischer Mond des Jupiter.",
-      textureURL:"https://upload.wikimedia.org/wikipedia/commons/f/f2/Io_highest_resolution_true_color.jpg"
-    }
-    // Falls weitere Monde/Planeten gewünscht sind, können sie analog hinzugefügt werden.
-  ];
-
-  // Standardmäßig kreisen alle um die Sonne (Objekt 0), außer wenn parent definiert ist.
-  objectsData.forEach((d,i) => {
-    if (i>0 && d.parent === undefined) {
-      d.parent = 0;
-    }
-    d.angle = Math.random()*Math.PI*2;
-    d.rotationOffset = Math.random();
-    d.texture = new Image();
-    d.texture.crossOrigin = "anonymous";
-    d.texture.src = d.textureURL;
-  });
-
-  function updatePositions() {
-    objectsData.forEach(obj => {
-      let parentObj = objectsData[obj.parent];
-      if (parentObj) {
-        obj.angle += obj.speed;
-        let dist = obj.orbitRadius;
-        let px = parentObj.x || 0;
-        let py = parentObj.y || 0;
-        obj.x = px + Math.cos(obj.angle)*dist;
-        obj.y = py + Math.sin(obj.angle)*dist;
-      } else {
-        obj.x = 0;
-        obj.y = 0;
-      }
-      // Langsame Eigenrotation
-      obj.rotationOffset = (obj.rotationOffset + 0.0002) % 1;
-    });
-  }
-
-  function drawPlanetWithTexture(obj) {
-    const r = obj.radius;
-    if (!obj.texture.complete || obj.texture.width === 0) {
-      // Fallback: einfacher Kreis
-      ctx.fillStyle = '#888';
-      ctx.beginPath();
-      ctx.arc(obj.x, obj.y, r, 0, Math.PI*2);
-      ctx.fill();
-      return;
-    }
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(obj.x, obj.y, r, 0, Math.PI*2);
-    ctx.clip();
-
-    const tw = obj.texture.width;
-    const th = obj.texture.height;
-    const maxOffset = tw - 2*r;
-    const sx = Math.floor(obj.rotationOffset * maxOffset);
-    const sy = Math.floor(th/2 - r);
-
-    ctx.drawImage(obj.texture, sx, sy, 2*r, 2*r, obj.x - r, obj.y - r, 2*r, 2*r);
-
-    // Leichte Schattierung
-    const grad = ctx.createRadialGradient(obj.x - r*0.4, obj.y - r*0.4, r*0.1, obj.x, obj.y, r*1.5);
-    grad.addColorStop(0, "rgba(0,0,0,0)");
-    grad.addColorStop(1, "rgba(0,0,0,0.3)");
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(obj.x, obj.y, r, 0, Math.PI*2);
-    ctx.fill();
-
-    ctx.restore();
-  }
-
-  function drawObjects() {
-    ctx.save();
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.translate(centerX + offsetX, centerY + offsetY);
-    ctx.scale(scaleFactor, scaleFactor);
-
-    ctx.strokeStyle = '#444';
-    ctx.lineWidth = 1/scaleFactor;
-
-    // Orbits um die Sonne (Objekt 0)
-    const sun = objectsData[0];
-    objectsData.forEach((obj,i) => {
-      if (i>0 && obj.parent===0) {
-        ctx.beginPath();
-        ctx.arc(sun.x, sun.y, obj.orbitRadius, 0, Math.PI*2);
-        ctx.stroke();
-      } else if (i>0 && obj.parent!==0) {
-        // Orbit um anderen Planeten
-        let p = objectsData[obj.parent];
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, obj.orbitRadius, 0, Math.PI*2);
-        ctx.stroke();
-      }
-    });
-
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.font = (14/scaleFactor) + 'px sans-serif';
-    ctx.fillStyle = '#fff';
-
-    objectsData.forEach(obj => {
-      drawPlanetWithTexture(obj);
-      ctx.fillText(obj.name, obj.x, obj.y - obj.radius - (5/scaleFactor));
-    });
-
-    ctx.restore();
-  }
-
-  function animate() {
-    updatePositions();
-    drawObjects();
-    requestAnimationFrame(animate);
-  }
-  animate();
-
-  canvas.addEventListener('click', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
-    let x = (mx - (centerX + offsetX))/scaleFactor;
-    let y = (my - (centerY + offsetY))/scaleFactor;
-
-    for (let i=objectsData.length-1; i>=0; i--) {
-      let obj = objectsData[i];
-      let dx = x - obj.x;
-      let dy = y - obj.y;
-      if (dx*dx + dy*dy <= obj.radius*obj.radius) {
-        showInfo(obj.image, obj.info);
-        break;
-      }
-    }
-  });
-
   function showInfo(imgUrl, text) {
     overlayImage.src = imgUrl;
     overlayText.textContent = text;
@@ -301,58 +117,20 @@
     overlayImage.src = "";
   });
 
-  // Pinch-Zoom und Pan
-  let initialDist = 0;
-  let initialMid = null;
-  let initialOffsetX = 0;
-  let initialOffsetY = 0;
-  let initialScale = 1.0;
-
-  function getTouches(e) {
-    return Array.from(e.touches).map(t => ({x:t.clientX, y:t.clientY}));
-  }
-
-  function distance(a,b) {
-    const dx = a.x-b.x;
-    const dy = a.y-b.y;
-    return Math.sqrt(dx*dx + dy*dy);
-  }
-
-  function midpoint(a,b) {
-    return {x:(a.x+b.x)/2, y:(a.y+b.y)/2};
-  }
-
-  canvas.addEventListener('touchstart', (e) => {
-    if (e.touches.length===2) {
-      const t = getTouches(e);
-      initialDist = distance(t[0], t[1]);
-      initialMid = midpoint(t[0], t[1]);
-      initialOffsetX = offsetX;
-      initialOffsetY = offsetY;
-      initialScale = scaleFactor;
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    const x = mx - canvas.width / 2;
+    const y = my - canvas.height / 2;
+    // Beispiel: Anzeige der Info der Sonne
+    if (Math.sqrt(x * x + y * y) < 20) {
+      showInfo(
+        "https://upload.wikimedia.org/wikipedia/commons/c/c3/Solar_sys8.jpg",
+        "Die Sonne ist der Stern im Zentrum unseres Sonnensystems."
+      );
     }
-  }, {passive:false});
-
-  canvas.addEventListener('touchmove', (e) => {
-    if (e.touches.length===2) {
-      e.preventDefault();
-      const t = getTouches(e);
-      const newDist = distance(t[0], t[1]);
-      const newMid = midpoint(t[0], t[1]);
-
-      const scaleChange = newDist / initialDist;
-      scaleFactor = initialScale * scaleChange;
-
-      offsetX = initialOffsetX + (newMid.x - initialMid.x);
-      offsetY = initialOffsetY + (newMid.y - initialMid.y);
-    }
-  }, {passive:false});
-
-  function clampScale() {
-    if (scaleFactor < 0.1) scaleFactor = 0.1;
-  }
-  setInterval(clampScale, 1000);
-
+  });
 })();
 </script>
 </body>
